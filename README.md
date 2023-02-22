@@ -66,12 +66,12 @@ Each course contains the following files:
 | problem_info.csv      | Record problems' `problem_set_problem_id`, `problem_id`, `knowledge_id`, `full_score` in the course. |
 | response_log.csv      | Record logs' `submission_id`, `user_id`, `create_at`, `problem_type`, `score`, `problem_set_id`, `problem_set_problem_id`, `status` in the course. |
 
-response_log.csv fields:
+response_log.csv fields description:
 
-- `submission_id`: the 
-- `problem_type`, 
-- `score`,  
-- `status`
+- `submission_id`: the ID of one commit record of a problem set.
+- `problem_type`: 1 represents true or false, 2 represents single-choice, 3 represents multiple-choice, and 4 represents fill-in-the-blank.
+- `score`: the scoring ratio the student get on  this problem.
+- `status`: auxiliary field to calculate student's score on this problem, contains *ACCEPTED*, *WRONG_ANSWER*, *PARTIAL_ACCEPTED*, etc.
 
 ##### Logs Example
 
@@ -89,28 +89,22 @@ response_log.csv fields:
 
 ##### Description
 
-Each course contains a data.csv with fields: 
+Each course contains a response_log.csv with fields: `submission_id`, `user_id`,  `create_at`, `language` ,  `score`,  `problem_set_problem_id`,  `problem_id`,  `skill_id`,  `code`,  `response`, `time_consume`, `memory_consume`. Some  of the fields description:
 
-- `submission_id`, 
-- `problem_type`, 
-- `score` , 
-- `problem_set_id`, 
-- `problem_set_problem_id`, 
-- `status`, 
-- `problem_id`, 
-- `reference_count`, 
-- `skill_id`, 
-- `difficulty`.
+- `submission_id`: the same as in non_programming data.
+- `language`: the programming code 
+- `score`: the same as in non_programming data.
+- `code`: the code submitted by the student.
+- `response`: the same as `status`in non_programming data.
+- `time_consume`: time consumed by the submitted code.
+- `memory_consume`: memory consumed by the submitted code.
 
 ##### Logs Example
 
-| submission_id       | user_id                                                      | create_at           | problem_type | score | problem_set_id      | problem_set_problem_id | status | problem_id          | reference_count | skill_id | difficulty |
-| ------------------- | ------------------------------------------------------------ | ------------------- | ------------ | ----- | ------------------- | ---------------------- | ------ | ------------------- | --------------- | -------- | ---------- |
-| 1499254523189440512 | 0007dadd9dab752acf8a1363a7cccf292b154229df4b35156651fe48ce5faffc | 2022-03-03 13:25:07 | 1            | 1     | 1497371829860438016 | 1497372209131987013    | 1      | 1407160646878199808 | 89              | 598      | 1          |
-| 1499254523189440512 | 0007dadd9dab752acf8a1363a7cccf292b154229df4b35156651fe48ce5faffc | 2022-03-03 13:25:07 | 1            | 1     | 1497371829860438016 | 1497372209127792778    | 1      | 1242959338549944320 | 383             | 584      | 1          |
-| 1499254523189440512 | 0007dadd9dab752acf8a1363a7cccf292b154229df4b35156651fe48ce5faffc | 2022-03-03 13:25:07 | 1            | 1     | 1497371829860438016 | 1497372209131987123    | 1      | 1219454085610201088 | 87              | 654      | 1          |
-| 1499254523189440512 | 0007dadd9dab752acf8a1363a7cccf292b154229df4b35156651fe48ce5faffc | 2022-03-03 13:25:07 | 1            | 1     | 1497371829860438016 | 1497372209127792668    | 1      | 1399889183840706560 | 81              | 576      | 1          |
-| 1499254523189440512 | 0007dadd9dab752acf8a1363a7cccf292b154229df4b35156651fe48ce5faffc | 2022-03-03 13:25:07 | 1            | 0     | 1497371829860438016 | 1497372209131987069    | 0      | 1402820680818925568 | 52              | 616      | 1          |
+| submission_id       | user_id                                                      | create_at           | language | score | problem_set_problem_id | problem_id          | skill_id | code                                                         | response     | time_consume | memory_consume |
+| ------------------- | ------------------------------------------------------------ | ------------------- | -------- | ----- | ---------------------- | ------------------- | -------- | ------------------------------------------------------------ | ------------ | ------------ | -------------- |
+| 1523963863660281856 | 82e2f8cab241392f2ffae8614297ed854b6113256c5c8d31cf2d14740a68706b | 2022-05-10 17:51:13 | Java     | 0.0   | 1523908485467762710    | 1013962033606774784 | 201      | import java.util.*;\npublic class Main {\n public static void  main(String[] args) {\n Scanner sc = new Scanner(System.in);\n int n =  sc.nextInt();\n List<Integer> list = new ArrayList<Integer>();\n  for (int i = 0; i < n; i++) {\n list.add(sc.nextInt());\n }\n  list.sort(Comparator.naturalOrder());\n  System.out.println(list.get(list.size()-2));\n }\n} | WRONG_ANSWER | 125          | 18404          |
+| 1523963973706231808 | 82e2f8cab241392f2ffae8614297ed854b6113256c5c8d31cf2d14740a68706b | 2022-05-10 17:51:39 | Java     | 0.0   | 1523908485467762710    | 1013962033606774784 | 201      | import java.util.*;\npublic class Main {\n public static void  main(String[] args) {\n Scanner sc = new Scanner(System.in);\n int n =  sc.nextInt();\n List<Integer> list = new ArrayList<Integer>();\n  for (int i = 0; i < n; i++) {\n list.add(sc.nextInt());\n }\n  list.sort(Comparator.naturalOrder());\n  System.out.print(list.get(list.size()-2));\n }\n} | WRONG_ANSWER | 113          | 15232          |
 
 
 
