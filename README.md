@@ -53,7 +53,7 @@ data_baiteng/
 
 ### Statistics
 
-Detailed statistics of each course's students, problem, concepts, non_programming_logs and programming_logs can be found in [statistics.csv]().
-
 
 ![statistics](./img/statistics.png)
+
+Detailed statistics of each course's students, problems, concepts, non_programming_logs and programming_logs can be found in [statistics.csv](https://github.com/wahr0411/PTADisc/blob/main/statistics.xlsx).
