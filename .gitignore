@@ -1,2 +1,5 @@
 README.assets/
 .DS_Store
+CCLMF/data/
+CCLMF/model/
+CCLMF/logs/
