@@ -4,58 +4,15 @@ import pandas as pd
 import numpy as np
 import json
 import time
+import os
 import argparse
-from utils.utils import *
-from models.NCDM.NCD_CD import *
-from models.NCDM.NCD_meta import *
+from model import NCD, CC_NCD
 
-# 命令控制语句
-argparser = argparse.ArgumentParser(description="diff through pp")
-argparser.add_argument('--epochs', default=20, type=int, 
-                    metavar='N',
-                    help='number of total epochs to run')
-argparser.add_argument('-lr', '--learning-rate', default=1e-3, type=float,
-                metavar='LR', help='initial learning rate', dest='lr')
-argparser.add_argument('-b', '--batch-size', default=64, type=int,
-                    metavar='N')
-argparser.add_argument('-g','--gpu', type=str, default='cuda')
-argparser.add_argument('-i', '--index', default=0, type=int)
-argparser.add_argument('-r', '--ratio', default=0, type=float)
-argparser.add_argument('-n', '--number', default=30, type=int)
-argparser.add_argument('-dn', '--dataset-name', default="java-30", type=str)
-argparser.add_argument('-mn', '--model-name', default="NCD_meta", type=str)
-argparser.add_argument('-hz', '--hidden-size', default=512, type=int)
-args = argparser.parse_args()
-
-# 一些参数
-model_name = args.model_name
-batch_size = args.batch_size
-epoch = args.epochs
-hidden_size = args.hidden_size
-ratio = args.ratio
-index = args.index
-device = torch.device(args.gpu if torch.cuda.is_available() else 'cpu')
-dataset_name = args.dataset_name
-pre_dataset_name = "baiteng_Python程序设计-924247594312409088"
-pre_model = "./python_model"
-
-# 记录文件
+from utils import Logger
 logger = Logger()
 def log(str):
     print(str)
     logger.log(str + '\n')
-current_time = time.strftime('%Y-%m-%d-%H:%M', time.localtime())
-log_dir = f'./logs/emcdr/{model_name}/{args.number}/'
-if not os.path.exists(log_dir):
-    os.mkdir(log_dir)
-logger.set_logdir(log_dir)
-log_name = f"{model_name}_{current_time}_{ratio}.log"
-logger.set_filename(log_name)
-log_name = log_dir+log_name
-
-log(f"start training {model_name} on {dataset_name}, batchsize: {batch_size}, epoch: {epoch}, lr: {args.lr}, device: {device}, hidden_size: {hidden_size}")
-log(f"log file saved in {log_name}")
-log(f"pre_model_name: {pre_model}, drop_ratio: {ratio}")
 
 
 def transform(user, item, item2knowledge, score, batch_size):
@@ -71,50 +28,77 @@ def transform(user, item, item2knowledge, score, batch_size):
     )
     return DataLoader(data_set, batch_size=batch_size, shuffle=True)
 
-# 获取目标域的Q矩阵
-df_item = pd.read_csv(f"../baiteng/dataset/final/{dataset_name}/item.csv")
-item2knowledge = {}
-knowledge_set = set()
-for i, s in df_item.iterrows():
-    item_id, knowledge_codes = s['item_id'], s['knowledge_code']
-    item2knowledge[item_id] = knowledge_codes
+if __name__ == '__main__':
+    # argparse
+    argparser = argparse.ArgumentParser()
+    argparser.add_argument('-e', '--epoch', default=30, type=int)
+    argparser.add_argument('-lr', '--learning-rate', default=1e-3, type=float)
+    argparser.add_argument('-b', '--batch-size', default=64, type=int)
+    argparser.add_argument('-g','--gpu', type=str, default='cuda')
+    argparser.add_argument('-i', '--index', default=0, type=int)
+    argparser.add_argument('-r', '--ratio', default=0, type=float)
+    argparser.add_argument('-mn', '--model-name', default="CC_NCD", type=str)
+    args = argparser.parse_args()
 
-# 读取源域和目标域的参数信息
-src_info = f"../baiteng/dataset/final/{pre_dataset_name}/info.json"
-dst_info = f"../baiteng/dataset/final/{dataset_name}/info.json"
-with open(src_info, 'r') as f:
-    info = json.load(f)
-pre_user_n = info['student_cnt']
-pre_item_n = info['problem_cnt']
-pre_knowledge_n = info['concept_cnt']
-log(f"src_data: user_n: {pre_user_n}, item_n: {pre_item_n}, konwledge_n: {pre_knowledge_n}")
-with open(dst_info, 'r') as f:
-    info = json.load(f)
-user_n = info['student_cnt']
-item_n = info['problem_cnt']
-knowledge_n = info['concept_cnt']
-log(f"dst_data: user_n: {user_n}, item_n: {item_n}, konwledge_n: {knowledge_n}")
+    # parameters
+    model_name = args.model_name
+    batch_size = args.batch_size
+    epoch = args.epoch
+    ratio = args.ratio
+    index = args.index
+    learning_rate = args.learning_rate
+    device = torch.device(args.gpu if torch.cuda.is_available() else 'cpu')
+    pre_model = "./model/python_model"
 
-# 读取测试集
-test_data = pd.read_csv(f"../baiteng/dataset/final/{dataset_name}/test.csv")
-test_set = transform(test_data["user_id"], test_data["item_id"], item2knowledge, test_data["score"], batch_size)
-log(f"transform test_data done.")
+    # set log files
+    current_time = time.strftime('%Y-%m-%d-%H:%M', time.localtime())
+    log_dir = f'./logs/{model_name}/'
+    if not os.path.exists(log_dir):
+        os.mkdir(log_dir)
+    log_name = log_dir+f"{model_name}_{current_time}_{ratio}.log"
+    logger.set_filename(log_name)
 
-for ratio in [ 0.3, 0.4, 0.5]:
-    log(f"ratio: {ratio}")
+    log(f"start training {model_name}, batchsize: {batch_size}, epoch: {epoch}, lr: {learning_rate}, device: {device}")
+    log(f"log file saved in {log_name}")
+    log(f"pre_model_name: {pre_model}, drop_ratio: {ratio}")
+
+    # get q-matrix in target course
+    df_item = pd.read_csv(f"./data/java-30/item.csv")
+    item2knowledge = {}
+    knowledge_set = set()
+    for i, s in df_item.iterrows():
+        item_id, knowledge_codes = s['item_id'], s['knowledge_code']
+        item2knowledge[item_id] = knowledge_codes
+
+    # get info in source and target course
+    pre_user_n = 29454
+    pre_item_n = 17787
+    pre_knowledge_n = 672
+    log(f"src_data: user_n: {pre_user_n}, item_n: {pre_item_n}, konwledge_n: {pre_knowledge_n}")
+    dst_info = f"./data/java-30/info.json"
+    with open(dst_info, 'r') as f:
+        info = json.load(f)
+    user_n = info['student_cnt']
+    item_n = info['problem_cnt']
+    knowledge_n = info['concept_cnt']
+    log(f"dst_data: user_n: {user_n}, item_n: {item_n}, konwledge_n: {knowledge_n}")
+
+    # read test dataset
+    test_data = pd.read_csv(f"./data/java-30/test.csv")
+    test_set = transform(test_data["user_id"], test_data["item_id"], item2knowledge, test_data["score"], batch_size)
+    log(f"transform test_data done.")
+
+    # index array
     a = range(10)
     if ratio==0:
         a = [0]
 
     for index in a:
         log(f"begin trainning with ratio:{ratio}, index: {index}")
-        # 读取数据集
-        dir_path = f"../baiteng/dataset/final/{dataset_name}/"
-        # test_data = pd.read_csv(dir_path+"test1.csv")
-        # train_data = test_data
-        # valid_data = test_data
+        # read train and valid dataset
+        dir_path = f"./data/java-30/"
         if ratio!=0:
-            dir_path = f"../baiteng/dataset/final/{dataset_name}/{ratio}/{index}/"
+            dir_path = f"./data/java-30/{ratio}/{index}/"
         train_data = pd.read_csv(dir_path+"train.csv")
         valid_data = pd.read_csv(dir_path+"valid.csv")
         log(f"data_dir: {dir_path}")
@@ -124,12 +108,15 @@ for ratio in [ 0.3, 0.4, 0.5]:
         valid_set = transform(valid_data["user_id"], valid_data["item_id"], item2knowledge, valid_data["score"], batch_size)
         log(f"transform valid_data done.")
 
-        best_model = f"./logs/emcdr/{model_name}/{args.number}/best/{ratio}_{index}_best_model"
-        if model_name=="NCD_CD":
-            cdm = NCD_CD(pre_knowledge_n, pre_item_n, pre_user_n, knowledge_n, item_n, user_n, pre_model, log_name, device, best_model)
-        if model_name=="NCD_meta":
-            cdm = NCD_meta(pre_knowledge_n, pre_item_n, pre_user_n, knowledge_n, item_n, user_n, pre_model, log_name, device, best_model, hidden_size=hidden_size)
-        cdm.train(train_set, valid_set, epoch=epoch, device=device, lr = args.lr)
+        model_dir =  f"./model/{model_name}/"
+        if not os.path.exists(model_dir):
+            os.mkdir(model_dir)
+        best_model = model_dir+f"{current_time}_{ratio}_{index}_best_model"
+        if model_name=="NCD":
+            cdm = NCD(knowledge_n, item_n, user_n, log_name, best_model)
+        if model_name=="CC_NCD":
+            cdm = CC_NCD(pre_knowledge_n, pre_item_n, pre_user_n, knowledge_n, item_n, user_n, pre_model, log_name, device, best_model)
+        cdm.train(train_set, valid_set, epoch=epoch, device=device, lr = learning_rate)
 
         cdm.load(best_model)
         auc, accuracy, rmse = cdm.eval(test_set, device=device)

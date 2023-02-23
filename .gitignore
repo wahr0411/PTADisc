@@ -2,4 +2,6 @@ README.assets/
 .DS_Store
 CCLMF/data/java-30/
 CCLMF/model/python_model
+CCLMF/model/CC_NCD/
 CCLMF/logs/
+CCLMF/__pycache__/

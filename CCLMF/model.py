@@ -1,4 +1,3 @@
-import logging
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -17,10 +16,10 @@ class PosLinear(nn.Linear):
         return F.linear(input, weight, self.bias)
 
 class MetaNet(torch.nn.Module):
-    def __init__(self, emb_dim1, emb_dim2, meta_dim):
+    def __init__(self, emb_dim1, emb_dim2):
         super().__init__()
-        self.decoder = torch.nn.Sequential(torch.nn.Linear(emb_dim1, meta_dim), torch.nn.ReLU(),
-                                           torch.nn.Linear(meta_dim, emb_dim1 * emb_dim2))
+        self.decoder = torch.nn.Sequential(torch.nn.Linear(emb_dim1, 100), torch.nn.ReLU(),
+                                           torch.nn.Linear(100, emb_dim1 * emb_dim2))
 
     def forward(self, input):
         output = self.decoder(input)
@@ -114,14 +113,14 @@ class NCDNet2(nn.Module):
 
 
 class CC_NCDNet(nn.Module):
-    def __init__(self, pre_knowledge_n, pre_exer_n, pre_student_n, knowledge_n, exer_n, student_n, hidden_size):
+    def __init__(self, pre_knowledge_n, pre_exer_n, pre_student_n, knowledge_n, exer_n, student_n):
         super(CC_NCDNet, self).__init__()
         self.pre_knowledge_n = pre_knowledge_n
         self.knowledge_n = knowledge_n
         # pretrained net
         self.pre_ncdm_net = NCDNet(pre_knowledge_n, pre_exer_n, pre_student_n)
         # mapping net
-        self.mapping = MetaNet(pre_knowledge_n, knowledge_n, hidden_size)
+        self.mapping = MetaNet(pre_knowledge_n, knowledge_n)
         self.ncdm_net = NCDNet2(knowledge_n, exer_n, student_n)
 
         # initialize
@@ -222,17 +221,15 @@ class NCD(CDM):
 
     def save(self, filepath):
         torch.save(self.ncdm_net.state_dict(), filepath)
-        logging.info("save parameters to %s" % filepath)
 
     def load(self, filepath):
         self.ncdm_net.load_state_dict(torch.load(filepath))  # , map_location=lambda s, loc: s
-        logging.info("load parameters from %s" % filepath)
 
 
 class CC_NCD(CDM):
-    def __init__(self, pre_knowledge_n, pre_exer_n, pre_student_n, knowledge_n, exer_n, student_n, pre_model_name, log_name, device, best_model, hidden_size):
+    def __init__(self, pre_knowledge_n, pre_exer_n, pre_student_n, knowledge_n, exer_n, student_n, pre_model_name, log_name, device, best_model):
         super(CC_NCD, self).__init__()
-        self.ncd_meta_net = CC_NCDNet(pre_knowledge_n, pre_exer_n, pre_student_n, knowledge_n, exer_n, student_n, hidden_size)
+        self.ncd_meta_net = CC_NCDNet(pre_knowledge_n, pre_exer_n, pre_student_n, knowledge_n, exer_n, student_n)
         self.load_pre(pre_model_name, device)
         self.log_name = log_name
         self.best_model = best_model
@@ -303,13 +300,10 @@ class CC_NCD(CDM):
 
     def load(self, filepath):
         self.ncd_meta_net.load_state_dict(torch.load(filepath))  # , map_location=lambda s, loc: s
-        logging.info("load parameters from %s" % filepath)
 
     def load_pre(self, filepath, device):
         self.ncd_meta_net.pre_ncdm_net.load_state_dict(torch.load(filepath, map_location=device))  # , map_location=lambda s, loc: s
-        logging.info("load pretrained_model parameters from %s" % filepath)
 
     def save(self, filepath):
         torch.save(self.ncd_meta_net.state_dict(), filepath)
-        logging.info("save parameters to %s" % filepath)
 
