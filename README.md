@@ -121,5 +121,4 @@ Detailed statistics of each course's students, problems, concepts, non_programmi
 
 ### CCLMF
 
-Details can be found in [README.md]().
-
+Details can be found in [README.md](https://github.com/wahr0411/PTADisc/blob/main/CCLMF/README.md).
