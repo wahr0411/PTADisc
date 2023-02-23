@@ -44,7 +44,7 @@ data_baiteng/
 | baseline_dataset_for_CD | $4$ selected courses' datasets for cognitive diagnosis.      |
 | baseline_dataset_for_KT | $4$ selected courses' datasets for knowledge tracing.        |
 | cross_course_datasets   | datasets of $5$ courses which are simultaneously taken by $29,454$ students. |
-| datasets_for_CCLMF      | *Python Programming* and *Java Programming* datasets, which is used to conduct CCLMF experiments. |
+| datasets_for_CCLMF      | *Java Programming* datasets and pretrained NCD model on *Python Programming*, which is used to conduct CCLMF experiments. |
 | programming_datasets    | $4$ selected courses' datasets for knowledge tracing.        |
 
 
