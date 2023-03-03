@@ -48,7 +48,7 @@ if __name__ == '__main__':
     index = args.index
     learning_rate = args.learning_rate
     device = torch.device(args.gpu if torch.cuda.is_available() else 'cpu')
-    pre_model = "./model/python_model"
+    pre_model = "./model/ncd_python_model"
 
     # set log files
     current_time = time.strftime('%Y-%m-%d-%H:%M', time.localtime())
