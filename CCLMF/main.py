@@ -67,13 +67,14 @@ if __name__ == '__main__':
     item2knowledge = {}
     knowledge_set = set()
     for i, s in df_item.iterrows():
-        item_id, knowledge_codes = s['item_id'], s['knowledge_code']
+        item_id, knowledge_codes = s['item_id'], list(set(eval(s['knowledge_code'])))
         item2knowledge[item_id] = knowledge_codes
+        knowledge_set.update(knowledge_codes)
 
     # get info in source and target course
     pre_user_n = 29454
     pre_item_n = 17787
-    pre_knowledge_n = 672
+    pre_knowledge_n = 685
     log(f"src_data: user_n: {pre_user_n}, item_n: {pre_item_n}, konwledge_n: {pre_knowledge_n}")
     dst_info = f"./data/java-30/info.json"
     with open(dst_info, 'r') as f:
