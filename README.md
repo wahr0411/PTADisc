@@ -15,7 +15,7 @@ We illustrate the characteristics of PTADisc from the following four aspects:
 
 ### Data repository structure
 
-Data can be downloaded [here](http://124.70.199.175/).
+Data can be downloaded [here](http://121.36.215.35/).
 
 The directory is organized as:
 
