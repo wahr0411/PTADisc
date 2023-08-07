@@ -24,6 +24,7 @@ data_baiteng/
 ├── scripts
 ├── structured_data
 │   ├── global_data
+│   ├── course_info
 │   ├── non_programming_data
 │   └── programming_data
 └── task_specific_dataset
@@ -50,6 +51,55 @@ data_baiteng/
 
 
 ### Detailed information of structured data
+
+#### Global Data
+
+##### Description
+
+This directory includes files of global data:
+
+| Filename                        | Description                                                  |
+| ------------------------------- | ------------------------------------------------------------ |
+| knowledge_concept_all.csv       | The tree structure of all the knowledge concepts in PTADisc, which is in forms of `knowledge_point_id`, `name`, `parent_id`. |
+| problem_to_difficulty.json      | Global dictionary of `problem_id` to `difficulty`.           |
+| problem_to_knowledge.json       | Global dictionary of `problem_id` to `knowledge_id`.         |
+| problem_to_reference_count.json | Global dictionary of `problem_id` to `reference_count`.      |
+| problem_type                    | Global dictionary of `problem_id` to `problem_type`.         |
+| psp_to_full_score.json          | Global dictionary of `problem_set_problem_id` to `full_score`. |
+| psp_to_problem.json             | Global dictionary of `problem_set_problem_id` to `problem_id`. |
+
+##### Knowledge Concept Example
+
+`parent_id`=-1 indicates that it's the course's name, which is the root of its knowledge concept tree.
+
+| knowledge_point_id | name               | parent_id |
+| ------------------ | ------------------ | --------- |
+| 383                | 概率论与数理统计   | -1        |
+| 384                | 随机事件和概率     | 383       |
+| 393                | 随机变量及概率分布 | 383       |
+| 389                | 全概率公式         | 384       |
+| 390                | 贝叶斯公式         | 384       |
+
+##### Problem Type
+
+```
+enum ProblemType {
+    NO_PROBLEM_TYPE = 0;
+    TRUE_OR_FALSE = 1;  
+    MULTIPLE_CHOICE = 2;  
+    MULTIPLE_CHOICE_MORE_THAN_ONE_ANSWER = 3; 
+    FILL_IN_THE_BLANK = 4; 
+    FILL_IN_THE_BLANK_FOR_PROGRAMMING = 5; 
+    CODE_COMPLETION = 6;  
+    PROGRAMMING = 7; 
+    SUBJECTIVE = 8;  
+    MULTIPLE_FILE = 9;  
+    }
+```
+
+
+
+
 
 #### Non-programming data
 
@@ -85,6 +135,8 @@ response_log.csv fields description:
 
 
 
+
+
 #### Programming data
 
 ##### Description
@@ -105,6 +157,48 @@ Each course contains a response_log.csv with fields: `submission_id`, `user_id`,
 | ------------------- | ------------------------------------------------------------ | ------------------- | -------- | ----- | ---------------------- | ------------------- | -------- | ------------------------------------------------------------ | ------------ | ------------ | -------------- |
 | 1523963863660281856 | 82e2f8cab241392f2ffae8614297ed854b6113256c5c8d31cf2d14740a68706b | 2022-05-10 17:51:13 | Java     | 0.0   | 1523908485467762710    | 1013962033606774784 | 201      | import java.util.*;\npublic class Main {\n public static void  main(String[] args) {\n Scanner sc = new Scanner(System.in);\n int n =  sc.nextInt();\n List<Integer> list = new ArrayList<Integer>();\n  for (int i = 0; i < n; i++) {\n list.add(sc.nextInt());\n }\n  list.sort(Comparator.naturalOrder());\n  System.out.println(list.get(list.size()-2));\n }\n} | WRONG_ANSWER | 125          | 18404          |
 | 1523963973706231808 | 82e2f8cab241392f2ffae8614297ed854b6113256c5c8d31cf2d14740a68706b | 2022-05-10 17:51:39 | Java     | 0.0   | 1523908485467762710    | 1013962033606774784 | 201      | import java.util.*;\npublic class Main {\n public static void  main(String[] args) {\n Scanner sc = new Scanner(System.in);\n int n =  sc.nextInt();\n List<Integer> list = new ArrayList<Integer>();\n  for (int i = 0; i < n; i++) {\n list.add(sc.nextInt());\n }\n  list.sort(Comparator.naturalOrder());\n  System.out.print(list.get(list.size()-2));\n }\n} | WRONG_ANSWER | 113          | 15232          |
+
+
+
+#### Course Info
+
+##### Description
+
+The files under this directory provide additional information of user group and problem set. Each course contains the following files:
+
+| Filename                   | Description                                       |
+| -------------------------- | ------------------------------------------------- |
+| user_group_member.csv      | Record the user group members.                    |
+| user_group_problem_set.csv | Record the opened problem sets for user groups.   |
+| problem_set.csv            | Record the problem set's start time and end time. |
+
+##### User Group Member Example
+
+`user_group_member_id` is the id of a (`user_id`, `user_group_id`) pair.
+
+| user_group_member_id | user_id                                                      | user_group_id       |
+| -------------------- | ------------------------------------------------------------ | ------------------- |
+| 1041674784427282432  | e7de9a3c1163736606a53e738cdb82a29f860903e84e14c61f13b31f82706d28 | 1041661419302744064 |
+| 1041680824921296896  | 95c2f1226984fee4c1748e567279808b02e5128dbd1060ebd4692dbe164000a6 | 1041661579701325824 |
+| 1041680824535420928  | 8e3f445a0fae30aef3daf067d1bebf648ca84181c21a924560f9a9a1f1d1504c | 1041661579701325824 |
+
+##### User Group - Problem Set Example
+
+| user_group_problem_set_id | user_group_id       | user_group_id       |
+| ------------------------- | ------------------- | ------------------- |
+| 1053296011098509312       | 1041661579701325824 | 1053295797428080640 |
+| 1053296069663563776       | 1041661419302744064 | 1053295797428080640 |
+| 1057397021588357120       | 1041661419302744064 | 1057375475356430336 |
+
+##### Problem Set Example
+
+| problem_set_id      | start_at            | end_at              |
+| ------------------- | ------------------- | ------------------- |
+| 1057375475356430336 | 2018-11-02 12:00:00 | 2018-11-21 12:00:00 |
+| 1118521024520945664 | 2019-04-17 22:24:00 | 2019-04-18 22:24:00 |
+| 1119973878406443008 | 2019-04-21 22:38:00 | 2019-04-28 22:38:00 |
+
+##### 
 
 
 
