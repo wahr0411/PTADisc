@@ -184,7 +184,7 @@ The files under this directory provide additional information of user group and 
 
 ##### User Group - Problem Set Example
 
-| user_group_problem_set_id | user_group_id       | user_group_id       |
+| user_group_problem_set_id | user_group_id       | problem_set_id      |
 | ------------------------- | ------------------- | ------------------- |
 | 1053296011098509312       | 1041661579701325824 | 1053295797428080640 |
 | 1053296069663563776       | 1041661419302744064 | 1053295797428080640 |
@@ -198,7 +198,7 @@ The files under this directory provide additional information of user group and 
 | 1118521024520945664 | 2019-04-17 22:24:00 | 2019-04-18 22:24:00 |
 | 1119973878406443008 | 2019-04-21 22:38:00 | 2019-04-28 22:38:00 |
 
-##### 
+
 
 
 
