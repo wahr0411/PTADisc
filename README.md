@@ -2,7 +2,7 @@
 
 PTADisc is sourced from  [PTA](https://pintia.cn/) (Programming Teaching Assistant), a learner-based online system  for universities and society developed by Hangzhou PAT Education Technology Co., Ltd.
 
- PTADisc is a diverse, immense, student-centered dataset that emphasizes its sufficient cross-course information for personalized learning. It includes $68$ courses, $1,527,974$ students, $2,506$ concepts, $220,649$ problems, and over $680$ million student response logs.
+ PTADisc is a diverse, immense, student-centered dataset that emphasizes its sufficient cross-course information for personalized learning. It includes $74$ courses, $1,530,100$ students, $4,504$ concepts, $225,615$ problems, and over $680$ million student response logs.
 
 We illustrate the characteristics of PTADisc from the following four aspects:
 
@@ -40,7 +40,7 @@ data_baiteng/
 | ----------------------- | ------------------------------------------------------------ |
 | scripts                 | Scripts which can conduct index mapping on structured data to generate final datasets for CD and KT. |
 | global_data             | Global_data contains problem bank of all courses, including dictionaries of problem_to_difficulty, problem_to_knowledge, problem_to_reference_count, psp_to_full_score, psp_to_problem saves as .json files. |
-| non_programming_data    | Intermediate structured data of $67$ courses, containing student list, concept list, problem list, Q-matrix file and processed response logs. |
+| non_programming_data    | Intermediate structured data of $73$ courses, containing student list, concept list, problem list, Q-matrix file and processed response logs. |
 | programming_data        | Intermediate structured data of $46$ courses, containing  processed response logs. |
 | baseline_dataset_for_CD | $4$ selected courses' datasets for cognitive diagnosis.      |
 | baseline_dataset_for_KT | $4$ selected courses' datasets for knowledge tracing.        |
