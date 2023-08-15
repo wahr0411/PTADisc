@@ -67,6 +67,7 @@ This directory includes files of global data:
 | problem_type                    | Global dictionary of `problem_id` to `problem_type`.         |
 | psp_to_full_score.json          | Global dictionary of `problem_set_problem_id` to `full_score`. |
 | psp_to_problem.json             | Global dictionary of `problem_set_problem_id` to `problem_id`. |
+| psp_to_problem_set_id.json      | Global dictionary of `problem_set_problem_id` to `problem_set_id`. |
 
 ##### Knowledge Concept Example
 
