@@ -21,12 +21,6 @@ The directory is organized as:
 
 ```
 data_baiteng/
-├── scripts
-├── structured_data
-│   ├── global_data
-│   ├── course_info
-│   ├── non_programming_data
-│   └── programming_data
 └── task_specific_dataset
     ├── non_programming_dataset
     │   ├── baseline_dataset_for_CD
@@ -38,10 +32,6 @@ data_baiteng/
 
 | Leaf directory          | Content                                                      |
 | ----------------------- | ------------------------------------------------------------ |
-| scripts                 | Scripts which can conduct index mapping on structured data to generate final datasets for CD and KT. |
-| global_data             | Global_data contains problem bank of all courses, including dictionaries of problem_to_difficulty, problem_to_knowledge, problem_to_reference_count, psp_to_full_score, psp_to_problem saves as .json files. |
-| non_programming_data    | Intermediate structured data of $73$ courses, containing student list, concept list, problem list, Q-matrix file and processed response logs. |
-| programming_data        | Intermediate structured data of $46$ courses, containing  processed response logs. |
 | baseline_dataset_for_CD | $4$ selected courses' datasets for cognitive diagnosis.      |
 | baseline_dataset_for_KT | $4$ selected courses' datasets for knowledge tracing.        |
 | cross_course_datasets   | datasets of $5$ courses which are simultaneously taken by $29,454$ students. |
@@ -51,6 +41,8 @@ data_baiteng/
 
 
 ### Detailed information of structured data
+
+For futher information, please contact: liyahu@zju.edu.cn.
 
 #### Global Data
 
