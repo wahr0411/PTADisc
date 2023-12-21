@@ -48,7 +48,7 @@ For futher information, please contact: liyahu@zju.edu.cn.
 
 ##### Description
 
-This directory includes files of global data:
+Global data includes:
 
 | Filename                        | Description                                                  |
 | ------------------------------- | ------------------------------------------------------------ |
@@ -157,7 +157,7 @@ Each course contains a response_log.csv with fields: `submission_id`, `user_id`,
 
 ##### Description
 
-The files under this directory provide additional information of user group and problem set. Each course contains the following files:
+The files of course info provide additional information of user group and problem set. Each course contains the following files:
 
 | Filename                   | Description                                       |
 | -------------------------- | ------------------------------------------------- |
