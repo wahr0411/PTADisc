@@ -209,3 +209,17 @@ Detailed statistics of each course's students, problems, concepts, non_programmi
 ### CCLMF
 
 Details can be found in [README.md](https://github.com/wahr0411/PTADisc/blob/main/CCLMF/README.md).
+
+
+
+### Citation
+
+```
+@inproceedings{hu2023ptadisc,
+  title={PTADisc: A Cross-Course Dataset Supporting Personalized Learning in Cold-Start Scenarios},
+  author={Hu, Liya and Dong, Zhiang and Chen, Jingyuan and Wang, Guifeng and Wang, Zhihua and Zhao, Zhou and Wu, Fei},
+  booktitle={Thirty-seventh Conference on Neural Information Processing Systems Datasets and Benchmarks Track},
+  year={2023}
+}
+```
+
